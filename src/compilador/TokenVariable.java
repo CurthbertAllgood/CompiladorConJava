@@ -4,15 +4,11 @@ public class TokenVariable implements Token {
 
     private String variable;
 
-	public TokenVariable() {
-		this.variable = variable;
+	public TokenVariable(String simbolo) {
+		setValor(simbolo);
 	}
 
 
-
-    public void setValor(String variable) {
-        this.variable = variable;
-    }
 
     public String getValor() {
         return variable;
@@ -20,5 +16,12 @@ public class TokenVariable implements Token {
 
     public String getTipo() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setValor(String valor) {
+            if(valor!=null){
+                this.variable=valor;
+            }
     }
 }

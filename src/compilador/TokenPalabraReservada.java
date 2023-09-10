@@ -15,4 +15,10 @@ public class TokenPalabraReservada implements Token {
     public String getTipo() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+
+    public void setValor(String variable){
+
+    }
+
 }

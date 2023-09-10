@@ -2,11 +2,12 @@ package compilador;
 
 public class TokenSimbolo implements Token {
 
-    private String simbolo="";
+    private String simbolo;
 
-	public TokenSimbolo() {
-		this.simbolo = simbolo;
+	public TokenSimbolo(String valor) {
+		setValor(valor);
 	}
+
 
 
 
@@ -19,6 +20,8 @@ public class TokenSimbolo implements Token {
 	}
 
     public void setValor(String simbolo) {
-        this.simbolo= simbolo;
+        if(simbolo!=null) {
+            this.simbolo = simbolo;
+        }
     }
 }

@@ -4,16 +4,12 @@ package compilador;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 
 
 public class AnalizadorLexico {
-
 	private FileReader fr;
-	private List<Token> tokens = new ArrayList<Token>();
 
+	public TokenFactory tf= new TokenFactory();
 	public AnalizadorLexico(String archivo) {
 		try {
 			this.fr = new FileReader(archivo);
@@ -22,57 +18,51 @@ public class AnalizadorLexico {
 		}
 	}
 
+
 	public void scanner() throws IOException {
-		int caracter = fr.read();
-		String cadena = "";
+		int caracter = fr.read(),opcion=0;
 		while (caracter != -1) {
-			boolean flag= true;
+			String cadena="";
 			if (Character.isLetter(caracter)) {
 				//INICIA GUARDAR VARIABLES/PALABRAS RESERVADAS
 				while (Character.isLetterOrDigit(caracter)) {
-					cadena += String.valueOf((char) caracter);
+					cadena += (char)caracter;
 					caracter = fr.read();
 				}
-				TokenVariable token = new TokenVariable();
-				token.setValor(cadena);
-				tokens.add(token);
-				cadena = "";
+				opcion=1;
 				//FINALIZA GUARDAR VARIABLES/PALABRAS RESERVADAS
-			} else if (Character.isDigit(caracter)) {
-				//INICIA EL GUARDAR ENTERO
+			} else if(Character.isDigit(caracter) ) {
+				//INICIA VERIFICA ENTERO
 				while (Character.isDigit(caracter)) {
-					cadena +=String.valueOf((char)caracter);
+					cadena += (char)caracter;
 					caracter = fr.read();
-				}
-				TokenNumero token = new TokenNumero();
-				token.setValor(Integer.parseInt(cadena));
-				tokens.add(token);
-				cadena="";
-				//FINALIZA EL GUARDAR ENTERO
-			}else if(caracter == ';'){
-				cadena+=caracter;
-				TokenSimbolo token = new TokenSimbolo();
-				token.setValor(String.valueOf(cadena));
-				tokens.add(token);
-				cadena="";
-				caracter= fr.read();
+					}
+				opcion=2;
+				//FINALIZA EL VERIFICA ENTERO
 
-			}else{
-				//INICIO FLAG
-				flag=false;
-				//FINAL FLAG
 			}
+			else if((char)caracter== ';'){
+				//Inicia el verificador de ;
 
-			if(!flag) {
+				cadena+=(char)caracter;
 				caracter = fr.read();
-				}
-
-
+				opcion=3;
+				//Finaliza el verificador de ;
+			}
+			else{
+				caracter= fr.read();
+			}
+			if(!cadena.isEmpty()) {
+				tf.crearToken(opcion, cadena);
+			}
 		}
-		for (Token valor : tokens) {
-			System.out.println(valor.getValor());
-		}
 
+		tf.getTokens();
+		fr.close();
 	}
+
 }
+
+
+
 

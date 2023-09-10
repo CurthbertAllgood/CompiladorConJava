@@ -1,12 +1,18 @@
 package compilador;
 
+import static java.lang.Integer.parseInt;
+
 public class TokenNumero implements Token {
 
     private int numero;
 
-	public TokenNumero() {
-		this.numero = numero;
+	public TokenNumero(String valor) {
+		setValor(valor);
 	}
+
+    public TokenNumero() {
+
+    }
 
 
     public String getValor() {
@@ -17,8 +23,12 @@ public class TokenNumero implements Token {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setValor(int cadena) {
-        this.numero = cadena;
+    @Override
+    public void setValor(String x) {
+        if(x!=null){
+            numero= parseInt(x);
+        }
     }
+
 
 }
