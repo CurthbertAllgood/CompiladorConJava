@@ -3,11 +3,11 @@ package compilador;
 public class TokenSimbolo implements Token {
 
     private String simbolo;
-
-	public TokenSimbolo(String valor) {
+    private int contador;
+	public TokenSimbolo(String valor, int contador) {
 		setValor(valor);
+        setContador(contador);
 	}
-
 
 
 
@@ -20,8 +20,24 @@ public class TokenSimbolo implements Token {
 	}
 
     public void setValor(String simbolo) {
-        if(simbolo!=null) {
+        if(simbolo!=" ") {
             this.simbolo = simbolo;
+        }else{
+            System.out.println("el dato ingresado es incorrecto");
+
+        }
+
+    }
+
+    @Override
+    public int getContador() {
+        return contador;
+    }
+
+    @Override
+    public void setContador(int contador){
+        if(contador!=0){
+            this.contador= contador;
         }
     }
 }

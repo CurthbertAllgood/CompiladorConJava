@@ -3,9 +3,11 @@ package compilador;
 public class TokenVariable implements Token {
 
     private String variable;
+    private int contador;
 
-	public TokenVariable(String simbolo) {
+	public TokenVariable(String simbolo, int contador) {
 		setValor(simbolo);
+        setContador(contador);
 	}
 
 
@@ -23,5 +25,18 @@ public class TokenVariable implements Token {
             if(valor!=null){
                 this.variable=valor;
             }
+    }
+
+
+    @Override
+    public int getContador() {
+        return contador;
+    }
+
+    @Override
+    public void setContador(int contador){
+        if(contador!=0){
+            this.contador=contador;
+        }
     }
 }

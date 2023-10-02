@@ -8,5 +8,9 @@ public interface Token {
 
     public void setValor(String x);
 
+    public int getContador();
+
+    public void setContador(int x);
+
 
 }

@@ -4,10 +4,14 @@ package compilador;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class AnalizadorLexico {
 	private FileReader fr;
+
+	private List<Token> tokens = new ArrayList<Token>();
 
 	public TokenFactory tf= new TokenFactory();
 	public AnalizadorLexico(String archivo) {
@@ -20,13 +24,14 @@ public class AnalizadorLexico {
 
 
 	public void scanner() throws IOException {
-		int caracter = fr.read(),opcion=0;
+		int caracter = fr.read(),opcion=0, contador=1;
 		while (caracter != -1) {
-			String cadena="";
+			Token tipoToken;
+			StringBuilder cadena= new StringBuilder();
 			if (Character.isLetter(caracter)) {
 				//INICIA GUARDAR VARIABLES/PALABRAS RESERVADAS
 				while (Character.isLetterOrDigit(caracter)) {
-					cadena += (char)caracter;
+					cadena.append((char) caracter);
 					caracter = fr.read();
 				}
 				opcion=1;
@@ -34,31 +39,44 @@ public class AnalizadorLexico {
 			} else if(Character.isDigit(caracter) ) {
 				//INICIA VERIFICA ENTERO
 				while (Character.isDigit(caracter)) {
-					cadena += (char)caracter;
+					cadena.append((char) caracter);
 					caracter = fr.read();
 					}
 				opcion=2;
 				//FINALIZA EL VERIFICA ENTERO
 
 			}
-			else if((char)caracter== ';'){
+			else if(!Character.isLetterOrDigit((char)caracter)&&(caracter != 32)){
 				//Inicia el verificador de ;
 
-				cadena+=(char)caracter;
+				if(caracter!=13) {
+					cadena.append((char) caracter);
+				}else{
+					contador++;
+				}
 				caracter = fr.read();
 				opcion=3;
 				//Finaliza el verificador de ;
-			}
-			else{
+
+			}else {
 				caracter= fr.read();
 			}
 			if(!cadena.isEmpty()) {
-				tf.crearToken(opcion, cadena);
+				tipoToken= tf.crearToken(opcion, cadena.toString(),contador);
+				tokens.add(tipoToken);
 			}
 		}
 
-		tf.getTokens();
+		getTokens();
 		fr.close();
+	}
+
+	public void getTokens() {
+		for (Token valor : tokens) {
+
+			System.out.println("valor del token --> "+valor.getValor()+" --> tipo de token: "+valor+" --> linea: "+valor.getContador());
+
+		}
 	}
 
 }

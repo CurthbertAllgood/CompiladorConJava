@@ -5,14 +5,12 @@ import static java.lang.Integer.parseInt;
 public class TokenNumero implements Token {
 
     private int numero;
-
-	public TokenNumero(String valor) {
+    private int contador;
+	public TokenNumero(String valor, int contador) {
 		setValor(valor);
+        setContador(contador);
 	}
 
-    public TokenNumero() {
-
-    }
 
 
     public String getValor() {
@@ -23,6 +21,10 @@ public class TokenNumero implements Token {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public int getNumero() {
+        return numero;
+    }
+
     @Override
     public void setValor(String x) {
         if(x!=null){
@@ -30,5 +32,16 @@ public class TokenNumero implements Token {
         }
     }
 
+    @Override
+    public int getContador() {
+        return contador;
+    }
+
+    @Override
+    public void setContador(int contador){
+        if(contador!=0){
+            this.contador= contador;
+        }
+    }
 
 }
