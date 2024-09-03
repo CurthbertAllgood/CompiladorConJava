@@ -1,4 +1,4 @@
-package compilador;
+package compilador.tokens;
 
 import static java.lang.Integer.parseInt;
 

@@ -1,4 +1,4 @@
-package compilador;
+package compilador.tokens;
 
 
 public class TokenFactory {
@@ -18,6 +18,7 @@ public class TokenFactory {
             case 4 -> {
                 tipoToken = new TCadena(valor, contador); // Asumiendo que tienes una clase para cadenas literales
             }
+
             default -> throw new IllegalStateException("Unexpected value: " + tipo);
         }
         return tipoToken;

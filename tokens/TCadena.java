@@ -1,4 +1,4 @@
-package compilador;
+package compilador.tokens;
 
 public class TCadena implements Token {
 

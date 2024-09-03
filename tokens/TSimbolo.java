@@ -1,4 +1,4 @@
-package compilador;
+package compilador.tokens;
 
 public class TSimbolo implements Token {
 
@@ -99,9 +99,6 @@ public class TSimbolo implements Token {
                 break;
             case ":=":
                 this.tipoDato =Terminal.ASIGNACION;
-                break;
-            case "EOF":
-                this.tipoDato =Terminal.EOF;
                 break;
 
             default:

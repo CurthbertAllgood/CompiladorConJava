@@ -1,5 +1,7 @@
 package compilador;
-import java.io.IOException;
+import compilador.tokens.Terminal;
+import compilador.tokens.Token;
+
 import java.util.HashMap;
 import java.util.Map;
 public class AnalizadorSemantico {

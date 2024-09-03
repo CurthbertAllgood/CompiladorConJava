@@ -1,20 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package compilador;
 
-import java.io.*;
+import compilador.tokens.Token;
 
+import java.io.IOException;
 
 public class compilador {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        String archivo = "/home/carlos-ortiz/Documentos/Sistemas De Computacion 1/compilador/BIEN-00.PL0";
+        AnalizadorLexico a = new AnalizadorLexico(archivo);
 
+        Token token;
 
-        AnalizadorLexico a = new AnalizadorLexico("/home/carlos-ortiz/Documentos/Sistemas De Computacion 1/compilador/BIEN-00.PL0");
+        try {
+            do {
+                token = a.scanear();
 
-        a.scanner();
+                //Corregir, generar un TokenEOF para darle fin al doWhile
+                if (token != null) {
+                    System.out.println(token);
+                }
+            } while (token != null);
+            a.cerrar(); } catch (IOException e) {
+            System.out.println("Error durante el análisis: " + e.getMessage());
+        }
     }
 }
-
