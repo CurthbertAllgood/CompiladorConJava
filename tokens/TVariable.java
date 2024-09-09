@@ -5,7 +5,7 @@ public class TVariable implements Token {
     private String variable;
     private int contador;
 
-    private Terminal tipoDato;
+    private ETerminal tipoDato;
 	public TVariable(String variable, int contador) {
 		setValor(variable);
         setContador(contador);
@@ -18,7 +18,7 @@ public class TVariable implements Token {
         return variable;
     }
 
-    public Terminal getTipo() {
+    public ETerminal getTipo() {
         return this.tipoDato;
     }
 
@@ -47,52 +47,52 @@ public class TVariable implements Token {
     public void setTipoDato(String variable){
         switch (variable.toUpperCase()){
             case "IF":
-                this.tipoDato =Terminal.IF;
+                this.tipoDato = ETerminal.IF;
                 break;
             case "CALL":
-                this.tipoDato =Terminal.CALL;
+                this.tipoDato = ETerminal.CALL;
                 break;
             case "ODD":
-                this.tipoDato =Terminal.ODD;
+                this.tipoDato = ETerminal.ODD;
                 break;
             case "THEN":
-                this.tipoDato =Terminal.THEN;
+                this.tipoDato = ETerminal.THEN;
                 break;
             case "READLN":
-                this.tipoDato =Terminal.READLN;
+                this.tipoDato = ETerminal.READLN;
                 break;
             case "WRITELN":
-                this.tipoDato =Terminal.WRITELN;
+                this.tipoDato = ETerminal.WRITELN;
                 break;
             case "WRITE":
-                this.tipoDato =Terminal.WRITE;
+                this.tipoDato = ETerminal.WRITE;
                 break;
             case "VAR":
-                this.tipoDato =Terminal.VAR;
+                this.tipoDato = ETerminal.VAR;
                 break;
             case "NULO":
-                this.tipoDato =Terminal.NULO;
+                this.tipoDato = ETerminal.NULO;
                 break;
             case "PROCEDURE":
-                this.tipoDato =Terminal.PROCEDURE;
+                this.tipoDato = ETerminal.PROCEDURE;
                 break;
             case "WHILE":
-                this.tipoDato =Terminal.WHILE;
+                this.tipoDato = ETerminal.WHILE;
                 break;
             case "DO":
-                this.tipoDato =Terminal.DO;
+                this.tipoDato = ETerminal.DO;
                 break;
             case "CONST":
-                this.tipoDato =Terminal.CONST;
+                this.tipoDato = ETerminal.CONST;
                 break;
             case "BEGIN":
-                this.tipoDato =Terminal.BEGIN;
+                this.tipoDato = ETerminal.BEGIN;
                 break;
             case "END":
-                this.tipoDato =Terminal.END;
+                this.tipoDato = ETerminal.END;
                 break;
             default:
-                this.tipoDato=Terminal.IDENTIFICADOR;
+                this.tipoDato= ETerminal.IDENTIFICADOR;
         }
 
     }

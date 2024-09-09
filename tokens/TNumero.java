@@ -7,7 +7,7 @@ public class TNumero implements Token {
     private int numero;
     private int contador;
 
-    private Terminal tipoDato;
+    private ETerminal tipoDato;
 	public TNumero(String valor, int contador) {
 		setValor(valor);
         setContador(contador);
@@ -20,9 +20,9 @@ public class TNumero implements Token {
             return String.valueOf(numero);
         }
 
-    public Terminal getTipo() {
-        return this.tipoDato;
-    }
+        public ETerminal getTipo() {
+            return this.tipoDato;
+        }
 
     public int getNumero() {
         return numero;
@@ -50,7 +50,7 @@ public class TNumero implements Token {
 
     @Override
     public void setTipoDato(String valor){
-        this.tipoDato = Terminal.NUMERO;
+        this.tipoDato = ETerminal.NUMERO;
 
     }
 

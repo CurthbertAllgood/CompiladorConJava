@@ -5,7 +5,7 @@ public class TSimbolo implements Token {
     private String simbolo;
     private int contador;
 
-    private Terminal tipoDato;
+    private ETerminal tipoDato;
 	public TSimbolo(String valor, int contador) {
 		setValor(valor);
         setContador(contador);
@@ -18,7 +18,7 @@ public class TSimbolo implements Token {
         return simbolo;
     }
 
-    public Terminal getTipo() {
+    public ETerminal getTipo() {
 		return this.tipoDato;
 	}
 
@@ -49,56 +49,56 @@ public class TSimbolo implements Token {
 
         switch (valor){
             case "-":
-                this.tipoDato =Terminal.MENOS;
+                this.tipoDato = ETerminal.MENOS;
                 break;
             case "+":
-                this.tipoDato =Terminal.MAS;
+                this.tipoDato = ETerminal.MAS;
                 break;
             case "*":
-                this.tipoDato =Terminal.POR;
+                this.tipoDato = ETerminal.POR;
                 break;
             case "/":
-                this.tipoDato =Terminal.DIVIDIDO;
+                this.tipoDato = ETerminal.DIVIDIDO;
                 break;
 
             case ";":
-                this.tipoDato =Terminal.PUNTO_Y_COMA;
+                this.tipoDato = ETerminal.PUNTO_Y_COMA;
                 break;
             case ",":
-                this.tipoDato =Terminal.COMA;
+                this.tipoDato = ETerminal.COMA;
                 break;
             case "=":
-                this.tipoDato =Terminal.IGUAL;
+                this.tipoDato = ETerminal.IGUAL;
                 break;
             case "<":
-                this.tipoDato =Terminal.MENOR;
+                this.tipoDato = ETerminal.MENOR;
                 break;
             case ".":
-                this.tipoDato =Terminal.PUNTO;
+                this.tipoDato = ETerminal.PUNTO;
                 break;
             case "<=":
-                this.tipoDato =Terminal.MENOR_IGUAL;
+                this.tipoDato = ETerminal.MENOR_IGUAL;
                 break;
             case ">=":
-                this.tipoDato =Terminal.MAYOR_IGUAL;
+                this.tipoDato = ETerminal.MAYOR_IGUAL;
                 break;
             case ">":
-                this.tipoDato =Terminal.MAYOR;
+                this.tipoDato = ETerminal.MAYOR;
                 break;
             case "<>":
-                this.tipoDato =Terminal.DISTINTO;
+                this.tipoDato = ETerminal.DISTINTO;
                 break;
             case "(":
-                this.tipoDato =Terminal.ABRE_PARENTESIS;
+                this.tipoDato = ETerminal.ABRE_PARENTESIS;
                 break;
             case ")":
-                this.tipoDato =Terminal.CIERRA_PARENTESIS;
+                this.tipoDato = ETerminal.CIERRA_PARENTESIS;
                 break;
             case "'":
-                this.tipoDato=Terminal.CADENA_LITERAL;
+                this.tipoDato= ETerminal.CADENA_LITERAL;
                 break;
             case ":=":
-                this.tipoDato =Terminal.ASIGNACION;
+                this.tipoDato = ETerminal.ASIGNACION;
                 break;
 
             default:

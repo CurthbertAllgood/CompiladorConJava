@@ -1,5 +1,5 @@
 package compilador;
-import compilador.tokens.Terminal;
+import compilador.tokens.ETerminal;
 import compilador.tokens.Token;
 
 import java.util.HashMap;
@@ -66,6 +66,6 @@ public class AnalizadorSemantico {
 
 
 
-    public void guardarEnTabla(int i, String nombre, Terminal terminal, String valor) {
+    public void guardarEnTabla(int i, String nombre, ETerminal terminal, String valor) {
     }
 }

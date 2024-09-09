@@ -1,6 +1,5 @@
 package compilador.tokens;
 
-
 public class TokenFactory {
 
     public Token crearToken(int tipo, String valor, int contador) {
@@ -16,9 +15,11 @@ public class TokenFactory {
                 tipoToken = new TSimbolo(valor, contador);
             }
             case 4 -> {
-                tipoToken = new TCadena(valor, contador); // Asumiendo que tienes una clase para cadenas literales
+                tipoToken = new TCadena(valor, contador);
             }
-
+            case 5 -> { // Este es el nuevo caso para EOF
+                tipoToken = new TEOF(contador);
+            }
             default -> throw new IllegalStateException("Unexpected value: " + tipo);
         }
         return tipoToken;

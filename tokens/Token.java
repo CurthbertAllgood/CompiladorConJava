@@ -4,7 +4,7 @@ public interface Token {
 
     public String getValor();
 
-    public Terminal getTipo();
+    public ETerminal getTipo();
 
     public void setValor(String x);
 

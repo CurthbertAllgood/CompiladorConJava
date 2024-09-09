@@ -27,17 +27,19 @@ class AnalizadorLexico {
 
 		caracter = fr.read();
 		if (caracter == -1) {
+			System.out.println("Fin del archivo alcanzado.");
 			return null; // Fin del archivo
 		}
 
-		// Ignoraa los espacio en blanco y los saltos de linea
+		// Ignorar los espacio en blanco y los saltos de linea
 		while (caracter == ' ' || caracter == '\n' || caracter == '\r') {
 			if (caracter == '\n') {
 				contador++;
 			}
 			caracter = fr.read();
 		}
-		//cadenas literales
+
+		// Cadena literal
 		if (caracter == '\'') {
 			cadena.setLength(0);
 			caracter = fr.read();
@@ -48,7 +50,7 @@ class AnalizadorLexico {
 			if (caracter == '\'') {
 				opcion = 4;
 			}
-		// Identificadores y palabras reservadas
+			// Identificadores y palabras reservadas
 		} else if (Character.isLetter(caracter)) {
 			cadena.setLength(0);
 			while (Character.isLetterOrDigit(caracter)) {
@@ -86,8 +88,11 @@ class AnalizadorLexico {
 			throw new IllegalStateException("No se pudo determinar el tipo de token");
 		}
 
-		return tf.crearToken(opcion, cadena.toString(), contador);
+		Token token = tf.crearToken(opcion, cadena.toString(), contador);
+		System.out.println("Token creado: " + token.getTipo() + " con valor: " + token.getValor());
+		return token;
 	}
+
 
 	public void cerrar() throws IOException {
 		if (fr != null) {
