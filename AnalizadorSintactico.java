@@ -4,28 +4,22 @@ import compilador.tokens.Token;
 import compilador.tokens.ETerminal;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 
 public class AnalizadorSintactico {
 
     private AnalizadorLexico aLex;
     private Token token;
-
+    private IndicadorErrores ie= new IndicadorErrores();
     public AnalizadorSintactico(AnalizadorLexico aLex) {
         this.aLex = aLex;
     }
 
-    private void avanzar() throws IOException {
-        token = aLex.scanear();
-        if (token != null) {
-            System.out.println("Token leído: " + token.getTipo() + " con valor: " + token.getValor());
-        }
-    }
 
     public void programa() throws IOException {
-        avanzar(); // Avanzar al primer token
-        bloque();  // Analizar el bloque del programa
+        token = aLex.scanear();
+        bloque();
 
-        // Después de analizar el bloque, esperamos un punto para terminar el programa
         if (token != null && token.getTipo().equals(ETerminal.PUNTO)) {
             System.out.println("Programa terminado correctamente.");
         } else {
@@ -33,146 +27,258 @@ public class AnalizadorSintactico {
         }
     }
 
+
+
+
     public void bloque() throws IOException {
-        // Manejar `CONST`
+
+        //INICIO DE LA CADENA CONST
         if (token.getTipo().equals(ETerminal.CONST)) {
-            avanzar();
-            do {
-                if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-                    avanzar();
-                    if (token.getTipo().equals(ETerminal.IGUAL)) {
-                        avanzar();
-                        if (token.getTipo().equals(ETerminal.NUMERO)) {
-                            avanzar();
-                        } else {
-                            throw new IllegalStateException("Error: Se esperaba un número después de '='.");
-                        }
-                    } else {
-                        throw new IllegalStateException("Error: Se esperaba un '=' después del identificador.");
-                    }
+            token = aLex.scanear();
+            if(token.getTipo().equals(ETerminal.IDENTIFICADOR)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(1, token.getContador());
+            }
+            if(token.getTipo().equals(ETerminal.IGUAL)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(2, token.getContador());
+            }
+            if(token.getTipo().equals(ETerminal.NUMERO)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(3, token.getContador());
+            }
+            while(token.getTipo().equals(ETerminal.COMA)){
+                token = aLex.scanear();
+                if(token.getTipo().equals(ETerminal.IDENTIFICADOR)){
+                    token = aLex.scanear();
                 }
-            } while (token.getTipo().equals(ETerminal.COMA));
-            if (token.getTipo().equals(ETerminal.PUNTO_Y_COMA)) {
-                avanzar();
-            } else {
-                throw new IllegalStateException("Error: Se esperaba un ';' después de la declaración.");
+                else{
+                    ie.getError(1, token.getContador());
+                }
+                if(token.getTipo().equals(ETerminal.IGUAL)){
+                    token = aLex.scanear();
+                }
+                else{
+                    ie.getError(2,token.getContador());
+                }
+                if(token.getTipo().equals(ETerminal.NUMERO)){
+                    token = aLex.scanear();
+                }
+                else{
+                    ie.getError(3, token.getContador());
+                }
+
+            }
+            if(token.getTipo().equals(ETerminal.PUNTO_Y_COMA)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(4, token.getContador());
             }
         }
-
-        // Manejar `VAR`
-        if (token.getTipo().equals(ETerminal.VAR)) {
-            avanzar();
-            do {
-                if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-                    avanzar();
-                } else {
-                    throw new IllegalStateException("Error: Se esperaba un identificador después de 'VAR'.");
+        //INICIO DE LA CADENA VAR
+        if(token.getTipo().equals(ETerminal.VAR)){
+            token = aLex.scanear();
+            
+            if(token.getTipo().equals(ETerminal.IDENTIFICADOR)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(1,token.getContador());
+            }
+            while(token.getTipo().equals(ETerminal.COMA)){
+                token = aLex.scanear();
+                if(token.getTipo().equals(ETerminal.IDENTIFICADOR)){
+                    token = aLex.scanear();
                 }
-            } while (token.getTipo().equals(ETerminal.COMA));
-            if (token.getTipo().equals(ETerminal.PUNTO_Y_COMA)) {
-                avanzar();
-            } else {
-                throw new IllegalStateException("Error: Se esperaba un ';' después de la declaración.");
+                else{
+                    ie.getError(1,token.getContador());
+                }
+            }
+            //ERROR, toma la Y como tipo de dato no
+            System.out.println("El valor es: "+token.getValor()+" "+token.getTipo());
+            if(token.getTipo().equals(ETerminal.PUNTO_Y_COMA)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(4,token.getContador());
             }
         }
-
-        // Manejar `PROCEDURE`
-        while (token.getTipo().equals(ETerminal.PROCEDURE)) {
-            avanzar();
-            if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-                avanzar();
-                if (token.getTipo().equals(ETerminal.PUNTO_Y_COMA)) {
-                    avanzar();
-                    bloque(); // Analizar el bloque del procedimiento
-                    if (token.getTipo().equals(ETerminal.PUNTO_Y_COMA)) {
-                        avanzar();
-                    } else {
-                        throw new IllegalStateException("Error: Se esperaba un ';' después del bloque del procedimiento.");
-                    }
-                } else {
-                    throw new IllegalStateException("Error: Se esperaba un ';' después del identificador del procedimiento.");
-                }
-            } else {
-                throw new IllegalStateException("Error: Se esperaba un identificador después de 'PROCEDURE'.");
+        if(token.getTipo().equals(ETerminal.PROCEDURE)){
+            token = aLex.scanear();
+            if(token.getTipo().equals(ETerminal.IDENTIFICADOR)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(1, token.getContador());
+            }
+            if(token.getTipo().equals(ETerminal.PUNTO_Y_COMA)){
+                bloque();
+            }
+            if(token.getTipo().equals(ETerminal.PUNTO_Y_COMA)){
+                token = aLex.scanear();
+            }
+            else{
+                ie.getError(4, token.getContador());
             }
         }
-
-        // Llamar a proposicion() después de manejar CONST, VAR y PROCEDURE
         proposicion();
     }
 
+
+        //INICIA EL METODO PROPOSICION
     public void proposicion() throws IOException {
-        if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-            avanzar();
-            if (token.getTipo().equals(ETerminal.ASIGNACION)) {
-                avanzar();
-                expresion();
-            } else {
-                throw new IllegalStateException("Error: Se esperaba ':=' después del identificador.");
+        switch (token.getTipo()) {
+            case IDENTIFICADOR -> {
+                token = aLex.scanear();
+                if (token.getTipo().equals(ETerminal.ASIGNACION)) {
+                    expresion();
+                } else {
+                    ie.getError(1, token.getContador());
+                }
             }
-        } else if (token.getTipo().equals(ETerminal.CALL)) {
-            avanzar();
-            if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-                avanzar();
-            } else {
-                throw new IllegalStateException("Error: Se esperaba un identificador después de 'CALL'.");
+            case CALL -> {
+                token = aLex.scanear();
+                if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
+                    token = aLex.scanear();
+                } else {
+                    ie.getError(1, token.getContador());
+                }
+
             }
-        } else if (token.getTipo().equals(ETerminal.BEGIN)) {
-            do {
-                avanzar();
+            case BEGIN -> {
                 proposicion();
-            } while (token.getTipo().equals(ETerminal.PUNTO_Y_COMA));
-            if (token.getTipo().equals(ETerminal.END)) {
-                avanzar();
-            } else {
-                throw new IllegalStateException("Error: Se esperaba 'END' para cerrar el bloque BEGIN.");
+                token = aLex.scanear();
+                while (token.getTipo().equals(ETerminal.PUNTO_Y_COMA)) {
+                    proposicion();
+                    token = aLex.scanear();
+                }
+                if (token.getTipo().equals(ETerminal.END)) {
+                    token = aLex.scanear();
+                } else {
+                    ie.getError(7, token.getContador());
+                }
+
             }
-        } else if (token.getTipo().equals(ETerminal.IF)) {
-            avanzar();
-            condicion();
-            if (token.getTipo().equals(ETerminal.THEN)) {
-                avanzar();
-                proposicion();
-            } else {
-                throw new IllegalStateException("Error: Se esperaba 'THEN' después de la condición 'IF'.");
+            case IF-> {
+                condicion();
+                token = aLex.scanear();
+                if (token.getTipo().equals(ETerminal.THEN)) {
+                    proposicion();
+                }
             }
-        } else if (token.getTipo().equals(ETerminal.WHILE)) {
-            avanzar();
-            condicion();
-            if (token.getTipo().equals(ETerminal.DO)) {
-                avanzar();
-                proposicion();
-            } else {
-                throw new IllegalStateException("Error: Se esperaba 'DO' después de la condición 'WHILE'.");
+            case WHILE-> {
+                condicion();
+                token = aLex.scanear();
+                if (token.getTipo().equals(ETerminal.DO)){
+                    proposicion();
+                }
+                else{
+                    ie.getError(5, token.getContador());
+                }
+            }
+            case READLN->{
+                if (token.getTipo().equals(ETerminal.READLN)) {
+                    token = aLex.scanear();
+                    if(token.getTipo().equals(ETerminal.ABRE_PARENTESIS)){
+                        token = aLex.scanear();
+                    }
+                    else {
+                        ie.getError(10, token.getContador());
+                    }
+                    if(token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
+                        token = aLex.scanear();
+                    }
+                    else{
+                        ie.getError(1, token.getContador());
+                    }
+                    while(token.getTipo().equals(ETerminal.COMA)){
+                        token = aLex.scanear();
+                        if(token.getTipo().equals(ETerminal.IDENTIFICADOR)){
+                            token = aLex.scanear();
+                        }
+                        else{
+                            ie.getError(1, token.getContador());
+                        }
+                    }
+                    if(token.getTipo().equals(ETerminal.CIERRA_PARENTESIS)){
+                        token = aLex.scanear();
+                    }
+                    else{
+                        ie.getError(9, token.getContador());
+                    }
+                }
+
+            }
+            case WRITE, WRITELN ->{
+                token = aLex.scanear();
+                if (token.getTipo().equals(ETerminal.ABRE_PARENTESIS)) {
+                    token = aLex.scanear();
+                }
+                else {
+                    ie.getError(10, token.getContador());
+                }
+                if (token.getTipo().equals(ETerminal.CADENA_LITERAL)) {
+                    token = aLex.scanear();
+                }
+                else{
+                    expresion();
+                }
+                while(token.getTipo().equals(ETerminal.COMA)){
+                    token = aLex.scanear();
+                    if(token.getTipo().equals(ETerminal.CADENA_LITERAL)){
+                        token = aLex.scanear();
+                    }
+                    else{
+                        expresion();
+                    }
+                }
+                if(token.getTipo().equals(ETerminal.CIERRA_PARENTESIS)){
+                    token = aLex.scanear();
+                }
+                else{
+                    ie.getError(9, token.getContador());
+                }
             }
         }
+
     }
+
 
     public void condicion() throws IOException {
         if (token.getTipo().equals(ETerminal.ODD)) {
-            avanzar();
             expresion();
         } else {
             expresion();
+            token = aLex.scanear();
             if (token.getTipo().equals(ETerminal.IGUAL) ||
                     token.getTipo().equals(ETerminal.MENOR) ||
                     token.getTipo().equals(ETerminal.MENOR_IGUAL) ||
                     token.getTipo().equals(ETerminal.MAYOR) ||
                     token.getTipo().equals(ETerminal.MAYOR_IGUAL) ||
                     token.getTipo().equals(ETerminal.DISTINTO)) {
-                avanzar();
+                token = aLex.scanear();
                 expresion();
+            }
+            else{
+                ie.getError(8, token.getContador());
             }
         }
     }
 
     public void expresion() throws IOException {
-        if (token.getTipo().equals(ETerminal.MAS) || token.getTipo().equals(ETerminal.MENOS)) {
-            avanzar();
+        if (    token.getTipo().equals(ETerminal.MAS) || token.getTipo().equals(ETerminal.MENOS)) {
+            token = aLex.scanear();
         }
         termino();
         while (token.getTipo().equals(ETerminal.MAS) || token.getTipo().equals(ETerminal.MENOS)) {
-            avanzar();
+            token = aLex.scanear();
             termino();
         }
     }
@@ -180,62 +286,27 @@ public class AnalizadorSintactico {
     public void termino() throws IOException {
         factor();
         while (token.getTipo().equals(ETerminal.POR) || token.getTipo().equals(ETerminal.DIVIDIDO)) {
-            avanzar();
+            token = aLex.scanear();
             factor();
         }
     }
 
     public void factor() throws IOException {
-        if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-            avanzar();
-        } else if (token.getTipo().equals(ETerminal.NUMERO)) {
-            avanzar();
-        } else if (token.getTipo().equals(ETerminal.ABRE_PARENTESIS)) {
-            avanzar();
-            expresion();
-            if (token.getTipo().equals(ETerminal.CIERRA_PARENTESIS)) {
-                avanzar();
+        switch (token.getTipo()) {
+            case IDENTIFICADOR, NUMERO -> {
+                token = aLex.scanear();
+            }
+            case ABRE_PARENTESIS -> {
+                token = aLex.scanear();
+                expresion();
+                if (token.getTipo().equals(ETerminal.CIERRA_PARENTESIS)) {
+                    token = aLex.scanear();
+                } else {
+                    ie.getError(9, token.getContador());
+                    }
             }
         }
     }
 
-    public void readln() throws IOException {
-        if (token.getTipo().equals(ETerminal.READLN)) {
-            avanzar();
-            if (token.getTipo().equals(ETerminal.ABRE_PARENTESIS)) {
-                avanzar();
-                if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-                    avanzar();
-                    while (token.getTipo().equals(ETerminal.COMA)) {
-                        avanzar();
-                        if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-                            avanzar();
-                        }
-                    }
-                    if (token.getTipo().equals(ETerminal.CIERRA_PARENTESIS)) {
-                        avanzar();
-                    }
-                }
-            }
-        }
-    }
 
-    public void writeln() throws IOException {
-        if (token.getTipo().equals(ETerminal.WRITELN) || token.getTipo().equals(ETerminal.WRITE)) {
-            avanzar();
-            if (token.getTipo().equals(ETerminal.ABRE_PARENTESIS)) {
-                avanzar();
-                if (token.getTipo().equals(ETerminal.CADENA_LITERAL) || token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
-                    avanzar();
-                    while (token.getTipo().equals(ETerminal.COMA)) {
-                        avanzar();
-                        expresion();
-                    }
-                    if (token.getTipo().equals(ETerminal.CIERRA_PARENTESIS)) {
-                        avanzar();
-                    }
-                }
-            }
-        }
-    }
 }
