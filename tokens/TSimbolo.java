@@ -100,9 +100,6 @@ public class TSimbolo implements Token {
             case ":=":
                 this.tipoDato = ETerminal.ASIGNACION;
                 break;
-
-            default:
-                this.tipoDato=null;
         }
 
 

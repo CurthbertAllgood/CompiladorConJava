@@ -17,8 +17,8 @@ public class TokenFactory {
             case 4 -> {
                 tipoToken = new TCadena(valor, contador);
             }
-            case 5 -> { // Este es el nuevo caso para EOF
-                tipoToken = new TEOF(contador);
+            case 5 -> {
+                tipoToken = new TEOF(valor, contador);
             }
             default -> throw new IllegalStateException("Unexpected value: " + tipo);
         }

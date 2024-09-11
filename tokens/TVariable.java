@@ -5,7 +5,7 @@ public class TVariable implements Token {
     private String variable;
     private int contador;
 
-    private ETerminal tipoDato;
+    private ETerminal tipoDato = ETerminal.IDENTIFICADOR;
 	public TVariable(String variable, int contador) {
 		setValor(variable);
         setContador(contador);
@@ -44,57 +44,27 @@ public class TVariable implements Token {
 
 
     @Override
-    public void setTipoDato(String variable){
-        switch (variable.toUpperCase()){
-            case "IF":
-                this.tipoDato = ETerminal.IF;
-                break;
-            case "CALL":
-                this.tipoDato = ETerminal.CALL;
-                break;
-            case "ODD":
-                this.tipoDato = ETerminal.ODD;
-                break;
-            case "THEN":
-                this.tipoDato = ETerminal.THEN;
-                break;
-            case "READLN":
-                this.tipoDato = ETerminal.READLN;
-                break;
-            case "WRITELN":
-                this.tipoDato = ETerminal.WRITELN;
-                break;
-            case "WRITE":
-                this.tipoDato = ETerminal.WRITE;
-                break;
-            case "VAR":
-                this.tipoDato = ETerminal.VAR;
-                break;
-            case "NULO":
-                this.tipoDato = ETerminal.NULO;
-                break;
-            case "PROCEDURE":
-                this.tipoDato = ETerminal.PROCEDURE;
-                break;
-            case "WHILE":
-                this.tipoDato = ETerminal.WHILE;
-                break;
-            case "DO":
-                this.tipoDato = ETerminal.DO;
-                break;
-            case "CONST":
-                this.tipoDato = ETerminal.CONST;
-                break;
-            case "BEGIN":
-                this.tipoDato = ETerminal.BEGIN;
-                break;
-            case "END":
-                this.tipoDato = ETerminal.END;
-                break;
-            default:
-                this.tipoDato= ETerminal.IDENTIFICADOR;
+    public void setTipoDato(String variable) {
+        if (this.variable != null) {
+            this.variable =  variable.toUpperCase();
+            switch (this.variable) {
+                case "IF" -> this.tipoDato = ETerminal.IF;
+                case "CALL" -> this.tipoDato = ETerminal.CALL;
+                case "ODD" -> this.tipoDato = ETerminal.ODD;
+                case "THEN" -> this.tipoDato = ETerminal.THEN;
+                case "READLN" -> this.tipoDato = ETerminal.READLN;
+                case "WRITELN" -> this.tipoDato = ETerminal.WRITELN;
+                case "WRITE" -> this.tipoDato = ETerminal.WRITE;
+                case "VAR" -> this.tipoDato = ETerminal.VAR;
+                case "NULO" -> this.tipoDato = ETerminal.NULO;
+                case "PROCEDURE" -> this.tipoDato = ETerminal.PROCEDURE;
+                case "WHILE" -> this.tipoDato = ETerminal.WHILE;
+                case "DO" -> this.tipoDato = ETerminal.DO;
+                case "CONST" -> this.tipoDato = ETerminal.CONST;
+                case "BEGIN" -> this.tipoDato = ETerminal.BEGIN;
+                case "END" -> this.tipoDato = ETerminal.END;
+            }
         }
-
     }
 
     public String toString() {

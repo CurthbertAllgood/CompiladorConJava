@@ -25,7 +25,9 @@ class AnalizadorLexico {
 		int opcion = 0;
 		StringBuilder cadena = new StringBuilder();
 
+		cadena.setLength(0);
 		caracter = fr.read();
+
 		if (caracter == -1) {
 			System.out.println("Fin del archivo alcanzado.");
 			return null; // Fin del archivo
@@ -41,26 +43,25 @@ class AnalizadorLexico {
 
 		// Cadena literal
 		if (caracter == '\'') {
-			cadena.setLength(0);
+			cadena.append((char) caracter);
 			caracter = fr.read();
 			while (caracter != -1 && caracter != '\'') {
 				cadena.append((char) caracter);
 				caracter = fr.read();
 			}
 			if (caracter == '\'') {
+				cadena.append((char) caracter);
 				opcion = 4;
 			}
 			// Identificadores y palabras reservadas
-		} else if (Character.isLetter(caracter)) {
-			cadena.setLength(0);
+		}else if (Character.isLetter(caracter)) {
 			while (Character.isLetterOrDigit(caracter)) {
 				cadena.append((char) caracter);
 				caracter = fr.read();
 			}
 			opcion = 1;
 			// Números
-		} else if (Character.isDigit(caracter)) {
-			cadena.setLength(0);
+		}else if (Character.isDigit(caracter)) {
 			while (Character.isDigit(caracter)) {
 				cadena.append((char) caracter);
 				caracter = fr.read();
@@ -68,7 +69,6 @@ class AnalizadorLexico {
 			opcion = 2;
 			// Símbolos
 		} else if (!Character.isLetterOrDigit(caracter)) {
-			cadena.setLength(0);
 			opcion = 3;
 			cadena.append((char) caracter);
 			if (caracter == ':') {
@@ -84,12 +84,14 @@ class AnalizadorLexico {
 			}
 		}
 
+
+
+
 		if (opcion == 0) {
 			throw new IllegalStateException("No se pudo determinar el tipo de token");
 		}
 
 		Token token = tf.crearToken(opcion, cadena.toString(), contador);
-		System.out.println("Token creado: " + token.getTipo() + " con valor: " + token.getValor());
 		return token;
 	}
 

@@ -3,9 +3,12 @@ package compilador.tokens;
 public class TEOF implements Token {
 
     private int contador;
+    private String variable;
 
-    public TEOF(int contador) {
+    public TEOF(String variable,int contador ){
+        this.variable = variable;
         this.contador = contador;
+
     }
 
     @Override
@@ -35,7 +38,7 @@ public class TEOF implements Token {
 
     @Override
     public void setTipoDato(String valor) {
-        // No se necesita implementar esto para EOF
+        variable = String.valueOf(ETerminal.EOF);
     }
 
     @Override
