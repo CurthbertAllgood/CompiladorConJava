@@ -1,6 +1,8 @@
 package compilador;
 
+import compilador.tokens.ETerminal;
 import compilador.tokens.Token;
+import compilador.tokens.TEOF;
 import compilador.tokens.TokenFactory;
 
 import java.io.FileNotFoundException;
@@ -11,6 +13,7 @@ class AnalizadorLexico {
 	private FileReader fr;
 	private TokenFactory tf = new TokenFactory();
 	private int contador = 1;
+	private int siguienteCaracter = -1; // Variable para guardar el próximo carácter
 
 	public AnalizadorLexico(String archivo) {
 		try {
@@ -26,19 +29,31 @@ class AnalizadorLexico {
 		StringBuilder cadena = new StringBuilder();
 
 		cadena.setLength(0);
-		caracter = fr.read();
 
-		if (caracter == -1) {
-			System.out.println("Fin del archivo alcanzado.");
-			return null; // Fin del archivo
+		// Usa el siguiente carácter si ya está disponible
+		if (siguienteCaracter != -1) {
+			caracter = siguienteCaracter;
+			siguienteCaracter = -1; // Reinicia la variable
+		} else {
+			caracter = fr.read();
 		}
 
-		// Ignorar los espacio en blanco y los saltos de linea
-		while (caracter == ' ' || caracter == '\n' || caracter == '\r') {
+		// Fin del archivo
+		if (caracter == -1) {
+			return new TEOF("EOF", contador);
+		}
+
+		// Ignorar los espacios en blanco, tabulaciones y los saltos de línea
+		while (caracter == ' ' || caracter == '\n' || caracter == '\r' || caracter == '\t') {
 			if (caracter == '\n') {
 				contador++;
 			}
 			caracter = fr.read();
+		}
+
+		// Filtra el carácter ￿ (0xFFFF) que representa el fin de archivo
+		if (caracter == 0xFFFF) {
+			return new TEOF("EOF", contador);
 		}
 
 		// Cadena literal
@@ -53,48 +68,43 @@ class AnalizadorLexico {
 				cadena.append((char) caracter);
 				opcion = 4;
 			}
-			// Identificadores y palabras reservadas
-		}else if (Character.isLetter(caracter)) {
+		} else if (Character.isLetter(caracter)) { // Identificadores y palabras reservadas
 			while (Character.isLetterOrDigit(caracter)) {
 				cadena.append((char) caracter);
 				caracter = fr.read();
 			}
+			siguienteCaracter = caracter;
 			opcion = 1;
-			// Números
-		}else if (Character.isDigit(caracter)) {
+		} else if (Character.isDigit(caracter)) { // Números
 			while (Character.isDigit(caracter)) {
 				cadena.append((char) caracter);
 				caracter = fr.read();
 			}
+			siguienteCaracter = caracter;
 			opcion = 2;
-			// Símbolos
-		} else if (!Character.isLetterOrDigit(caracter)) {
-			opcion = 3;
+		} else { // Símbolos y otros caracteres
 			cadena.append((char) caracter);
-			if (caracter == ':') {
+
+			// Verificación para caracteres especiales con más de un símbolo
+			if (caracter == ':' || caracter == '<' || caracter == '>') {
 				caracter = fr.read();
-				if (caracter == '=') {
+				if ((caracter == '=' && (cadena.charAt(0) == ':' || cadena.charAt(0) == '<' || cadena.charAt(0) == '>'))
+						|| (caracter == '>' && cadena.charAt(0) == '<')) {
 					cadena.append((char) caracter);
-				}
-			} else if (caracter == '<' || caracter == '>') {
-				caracter = fr.read();
-				if (caracter == '=' || (cadena.charAt(0) == '<' && caracter == '>')) {
-					cadena.append((char) caracter);
+				} else {
+					siguienteCaracter = caracter; // Guarda el carácter no consumido
 				}
 			}
+
+			opcion = 3; // Asume que es un símbolo
 		}
-
-
-
 
 		if (opcion == 0) {
 			throw new IllegalStateException("No se pudo determinar el tipo de token");
 		}
 
-		Token token = tf.crearToken(opcion, cadena.toString(), contador);
-		return token;
+		return tf.crearToken(opcion, cadena.toString(), contador);
 	}
-
 
 	public void cerrar() throws IOException {
 		if (fr != null) {

@@ -18,6 +18,7 @@ public class IndicadorErrores {
             case 8 -> System.out.println("se esperaba un operador aritmetico o comparativo \tLinea: "+contador);
             case 9 -> System.out.println("Se esperaba un cierre de parentesis \tLinea: "+contador);
             case 10 -> System.out.println("Se esperaba una apertura de parentesis \tLinea: "+contador);
+            case 11 -> System.out.println("Se esperaba una COMA \tLinea: "+contador);
 
 
         }
