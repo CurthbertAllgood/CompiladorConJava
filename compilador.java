@@ -1,18 +1,22 @@
 package compilador;
 
+
 import compilador.tokens.ETerminal;
 import compilador.tokens.Token;
 
 import java.io.IOException;
 
+
 public class compilador {
 
     public static void main(String[] args) {
         // Ruta del archivo a analizar
-        String archivo = "/home/carlos-ortiz/Documentos/Sistemas De Computacion 1/compilador/BIEN-00.PL0";
+        String archivo = "/home/carlos-ortiz/Documentos/Sistemas de Computacion 1/PL0/BIEN-05.PL0";
         AnalizadorLexico a = new AnalizadorLexico(archivo);
         AnalizadorSintactico sintactico = new AnalizadorSintactico(a);
 
+
+        /*
         try {
             // Iniciar el análisis sintáctico llamando a `programa`
             sintactico.programa();
@@ -30,7 +34,7 @@ public class compilador {
         }
 
         // BUCLE ANALIZADOR LÉXICO (comentado)
-        /*
+        */
         try {
             Token token;
             do {
@@ -50,6 +54,6 @@ public class compilador {
                 System.out.println("Error al cerrar el archivo: " + e.getMessage());
             }
         }
-        */
+
     }
 }

@@ -1,6 +1,6 @@
 package compilador;
 
-import compilador.tokens.ETerminal;
+
 import compilador.tokens.Token;
 import compilador.tokens.TEOF;
 import compilador.tokens.TokenFactory;

@@ -7,6 +7,26 @@ import java.util.Map;
 public class AnalizadorSemantico {
 
 
+
+    /*
+
+    //EL LLAMADO A BLOQUE DESDE PROGRAMA VA A TENER UN PARAMETRO ENTERO LLAMADO BASE, TMB UNA VARIABLE LOCAL LLAMADA DESPLAZAMIENTO
+
+    void bloqueo(int base){
+
+        int despe=0;
+    }
+
+
+    AL SEGUNDO LLAMADO VA A TENER UN PARAMETRO QUE SE VA A LLAMAR (BASE+DESPLAZAMIENTO)
+
+
+    CADA VEZ QUE SE LLAMA  AUN IDENTIFICADOR HAY QUE CARGARLO EN LA TABLA, A MENOS QUE YA ESTE CARGADO.
+
+    UN PROCEDURE ES CANDIDATO PARA CARGARLO EN LA TABLA
+
+   */
+
     //El analizador semantico se encarga de cargar en una tabla los objetos tomados, el sintactico los recibe y el analizador semantico se encarga de verificar que los identificadores no se repitan, revisando en la tabla cargada, por ejemplo.
 
         private Map<String, Integer> tablaSimbolos;

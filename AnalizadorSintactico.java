@@ -4,6 +4,10 @@ import compilador.tokens.ETerminal;
 import compilador.tokens.Token;
 import java.io.IOException;
 
+
+
+
+
 public class AnalizadorSintactico {
 
     private final AnalizadorLexico aLex;
@@ -15,9 +19,11 @@ public class AnalizadorSintactico {
     }
 
     public void programa() throws IOException {
-        System.out.println("Inicio del análisis del programa.");
+        //System.out.println("Inicio del análisis del programa.");
+        token= aLex.scanear();
+
         bloque();
-        System.out.println("Verificando final del programa...");
+        //System.out.println("Verificando final del programa...");
         if (token.getTipo().equals(ETerminal.PUNTO)) {
             aLex.scanear();
             System.out.println("Programa terminado correctamente.");
@@ -27,9 +33,8 @@ public class AnalizadorSintactico {
     }
 
     public void bloque() throws IOException {
-        System.out.println("Inicio del bloque.");
-        token = aLex.scanear();
-        System.out.println("Token inicial del bloque: " + token);
+        //System.out.println("Inicio del bloque.");
+        //System.out.println("Token inicial del bloque: " + token);
 
         // Manejo de la sección CONST
         if (token.getTipo().equals(ETerminal.CONST)) {
@@ -47,16 +52,16 @@ public class AnalizadorSintactico {
         }
 
         // Proposiciones
-        System.out.println("Inicio de proposiciones en bloque.");
+        //System.out.println("Inicio de proposiciones en bloque.");
         proposicion();
-        System.out.println("Fin del bloque.");
+        //System.out.println("Fin del bloque.");
     }
 
     private void manejarConst() throws IOException {
-        System.out.println("Inicio de la sección CONST.");
+        //System.out.println("Inicio de la sección CONST.");
         do {
             token = aLex.scanear();
-            System.out.println("Token en CONST: " + token);
+           // System.out.println("Token en CONST: " + token);
             if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
                 token = aLex.scanear();
             } else {
@@ -79,14 +84,14 @@ public class AnalizadorSintactico {
         } else {
             ie.getError(4, token.getContador());
         }
-        System.out.println("Fin de la sección CONST.");
+        //System.out.println("Fin de la sección CONST.");
     }
 
     private void manejarVar() throws IOException {
-        System.out.println("Inicio de la sección VAR.");
+        //System.out.println("Inicio de la sección VAR.");
         do {
             token = aLex.scanear();
-            System.out.println("Token en VAR: " + token);
+           // System.out.println("Token en VAR: " + token);
             if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
                 token = aLex.scanear();
             } else {
@@ -99,11 +104,11 @@ public class AnalizadorSintactico {
         } else {
             ie.getError(4, token.getContador());
         }
-        System.out.println("Fin de la sección VAR.");
+        //System.out.println("Fin de la sección VAR.");
     }
 
     private void manejarProcedure() throws IOException {
-        System.out.println("Inicio de la sección PROCEDURE.");
+        //System.out.println("Inicio de la sección PROCEDURE.");
         token = aLex.scanear();
         if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
             token = aLex.scanear();
@@ -121,15 +126,15 @@ public class AnalizadorSintactico {
         } else {
             ie.getError(4, token.getContador());
         }
-        System.out.println("Fin de la sección PROCEDURE.");
+        //System.out.println("Fin de la sección PROCEDURE.");
     }
 
     public void proposicion() throws IOException {
-        System.out.println("Inicio de proposición. Token actual: " + token);
+        //System.out.println("Inicio de proposición. Token actual: " + token);
 
         switch (token.getTipo()) {
             case IDENTIFICADOR -> {
-                System.out.println("Proposición: IDENTIFICADOR encontrado.");
+          //      System.out.println("Proposición: IDENTIFICADOR encontrado.");
                 token = aLex.scanear();
                 if (token.getTipo().equals(ETerminal.ASIGNACION)) {
                     token = aLex.scanear(); // escanea ':='
@@ -139,7 +144,7 @@ public class AnalizadorSintactico {
                 expresion();
             }
             case CALL -> {
-                System.out.println("Proposición: CALL encontrado.");
+            //    System.out.println("Proposición: CALL encontrado.");
                 token = aLex.scanear();
                 if (token.getTipo().equals(ETerminal.IDENTIFICADOR)) {
                     token = aLex.scanear(); // escanea el IDENTIFICADOR
@@ -148,7 +153,7 @@ public class AnalizadorSintactico {
                 }
             }
             case BEGIN -> {
-                System.out.println("Proposición: BEGIN encontrado.");
+              //  System.out.println("Proposición: BEGIN encontrado.");
                 token = aLex.scanear(); // escanea 'BEGIN'
                 proposicion(); // llama al método proposicion()
                 while (token.getTipo().equals(ETerminal.PUNTO_Y_COMA)) {
@@ -162,7 +167,7 @@ public class AnalizadorSintactico {
                 }
             }
             case IF -> {
-                System.out.println("Proposición: IF encontrado.");
+                //System.out.println("Proposición: IF encontrado.");
                 token = aLex.scanear(); // escanea 'IF'
                 condicion(); // llama al método condicion()
                 if (token.getTipo().equals(ETerminal.THEN)) {
@@ -173,7 +178,7 @@ public class AnalizadorSintactico {
                 proposicion();
             }
             case WHILE -> {
-                System.out.println("Proposición: WHILE encontrado.");
+                //System.out.println("Proposición: WHILE encontrado.");
                 token = aLex.scanear(); // escanea 'WHILE'
                 condicion(); // llama al método condicion()
                 if (token.getTipo().equals(ETerminal.DO)) {
@@ -184,7 +189,7 @@ public class AnalizadorSintactico {
                 proposicion();
             }
             case READLN -> {
-                System.out.println("Proposición: READLN encontrado.");
+                //System.out.println("Proposición: READLN encontrado.");
                 token = aLex.scanear(); // escanea 'READLN'
                 if (token.getTipo().equals(ETerminal.ABRE_PARENTESIS)) {
                     token = aLex.scanear(); // escanea '('
@@ -211,7 +216,7 @@ public class AnalizadorSintactico {
                 }
             }
             case WRITE -> {
-                System.out.println("Proposición: WRITE encontrado.");
+                //System.out.println("Proposición: WRITE encontrado.");
                 token = aLex.scanear(); // Escanea 'WRITE'
                 if (token.getTipo().equals(ETerminal.ABRE_PARENTESIS)) {
                     token = aLex.scanear(); // Escanea '('
@@ -233,7 +238,7 @@ public class AnalizadorSintactico {
                 }
             }
             case WRITELN -> {
-                System.out.println("Proposición: WRITELN encontrado.");
+                //System.out.println("Proposición: WRITELN encontrado.");
                 token = aLex.scanear(); // Escanea 'WRITELN'
                 if (token.getTipo().equals(ETerminal.ABRE_PARENTESIS)) {
                     token = aLex.scanear(); // Escanea '('
@@ -259,13 +264,13 @@ public class AnalizadorSintactico {
             }
         }
 
-        System.out.println("Fin de proposición.");
+      //  System.out.println("Fin de proposición.");
     }
 
     public void condicion() throws IOException {
-        System.out.println("Inicio de condición.");
+        //System.out.println("Inicio de condición.");
         if (token.getTipo().equals(ETerminal.ODD)) {
-            System.out.println("Condición ODD encontrada.");
+          //  System.out.println("Condición ODD encontrada.");
             token = aLex.scanear();
             expresion();
         } else {
@@ -282,24 +287,24 @@ public class AnalizadorSintactico {
                 ie.getError(8, token.getContador());
             }
         }
-        System.out.println("Fin de condición.");
+        //System.out.println("Fin de condición.");
     }
 
     public void expresion() throws IOException {
-        System.out.println("Inicio de expresión. Token actual: " + token);
+        //System.out.println("Inicio de expresión. Token actual: " + token);
         switch (token.getTipo()) {
             case MAS, MENOS -> {
-                System.out.println("Operador unario encontrado: " + token);
+               // System.out.println("Operador unario encontrado: " + token);
                 token = aLex.scanear();
             }
         }
         termino();
         while (token.getTipo().equals(ETerminal.MAS) || token.getTipo().equals(ETerminal.MENOS)) {
-            System.out.println("Operador encontrado en expresión: " + token);
+            //  System.out.println("Operador encontrado en expresión: " + token);
             token = aLex.scanear();
             termino();
         }
-        System.out.println("Fin de expresión.");
+        //System.out.println("Fin de expresión.");
     }
 
     public void termino() throws IOException {
@@ -310,28 +315,28 @@ public class AnalizadorSintactico {
             token = aLex.scanear();
             factor();
         }
-        System.out.println("Fin de término.");
+        //System.out.println("Fin de término.");
     }
 
     public void factor() throws IOException {
-        System.out.println("Inicio de factor.");
+        //System.out.println("Inicio de factor.");
         switch (token.getTipo()) {
             case IDENTIFICADOR, NUMERO -> {
-                System.out.println("Factor encontrado: " + token);
+          //      System.out.println("Factor encontrado: " + token);
                 token = aLex.scanear();
             }
             case ABRE_PARENTESIS -> {
-                System.out.println("Paréntesis abierto encontrado.");
+            //    System.out.println("Paréntesis abierto encontrado.");
                 token = aLex.scanear();
                 expresion();
                 if (token.getTipo().equals(ETerminal.CIERRA_PARENTESIS)) {
-                    System.out.println("Paréntesis cerrado encontrado.");
+              //      System.out.println("Paréntesis cerrado encontrado.");
                     token = aLex.scanear();
                 } else {
                     ie.getError(9, token.getContador());
                 }
             }
         }
-        System.out.println("Fin de factor.");
+       // System.out.println("Fin de factor.");
     }
 }
