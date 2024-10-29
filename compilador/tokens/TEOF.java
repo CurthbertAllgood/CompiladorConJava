@@ -1,4 +1,4 @@
-package compilador.tokens;
+package compilador.compilador.tokens;
 
 public class TEOF implements Token {
 
@@ -23,6 +23,16 @@ public class TEOF implements Token {
 
     @Override
     public void setValor(String x) {
+
+    }
+
+    @Override
+    public int getScope() {
+        return 0;
+    }
+
+    @Override
+    public void setScope(int scope) {
 
     }
 

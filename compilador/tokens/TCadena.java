@@ -1,4 +1,4 @@
-    package compilador.tokens;
+    package compilador.compilador.tokens;
 
     public class TCadena implements Token {
 
@@ -22,6 +22,16 @@
             if (valor != null) {
                 this.valor = valor;
             }
+        }
+
+        @Override
+        public int getScope() {
+            return 0;
+        }
+
+        @Override
+        public void setScope(int scope) {
+
         }
 
         @Override

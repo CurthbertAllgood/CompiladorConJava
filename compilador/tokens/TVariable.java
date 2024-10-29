@@ -1,18 +1,26 @@
-package compilador.tokens;
+package compilador.compilador.tokens;
 
 public class TVariable implements Token {
 
     private String variable;
     private int contador;
+    private int scope;
 
     private ETerminal tipoDato = ETerminal.IDENTIFICADOR;
-	public TVariable(String variable, int contador) {
-		setValor(variable);
+
+    public TVariable(String variable, int contador) {
+        setValor(variable);
         setContador(contador);
         setTipoDato(variable);
-	}
+    }
 
+    public int getNombre() {
+        return scope;
+    }
 
+    public void setNombre(int scope) {
+        this.scope = scope;
+    }
 
     public String getValor() {
         return variable;
@@ -24,11 +32,20 @@ public class TVariable implements Token {
 
     @Override
     public void setValor(String variable) {
-            if(variable!=null){
-                this.variable=variable;
-            }
+        if (variable != null) {
+            this.variable = variable;
+        }
     }
 
+    @Override
+    public int getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(int scope) {
+        this.scope = scope;
+    }
 
     @Override
     public int getContador() {
@@ -36,17 +53,16 @@ public class TVariable implements Token {
     }
 
     @Override
-    public void setContador(int contador){
-        if(contador!=0){
-            this.contador=contador;
+    public void setContador(int contador) {
+        if (contador != 0) {
+            this.contador = contador;
         }
     }
-
 
     @Override
     public void setTipoDato(String variable) {
         if (this.variable != null) {
-            this.variable =  variable.toUpperCase();
+            this.variable = variable.toUpperCase();
             switch (this.variable) {
                 case "IF" -> this.tipoDato = ETerminal.IF;
                 case "CALL" -> this.tipoDato = ETerminal.CALL;
@@ -72,6 +88,7 @@ public class TVariable implements Token {
                 "variable='" + variable + '\'' +
                 ", contador=" + contador +
                 ", tipoDato=" + tipoDato +
+                ", scope=" + scope +
                 '}';
     }
 }

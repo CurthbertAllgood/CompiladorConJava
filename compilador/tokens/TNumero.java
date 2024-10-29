@@ -1,4 +1,4 @@
-package compilador.tokens;
+package compilador.compilador.tokens;
 
 import static java.lang.Integer.parseInt;
 
@@ -6,7 +6,7 @@ public class TNumero implements Token {
 
     private int numero;
     private int contador;
-
+    private int scope;
     private ETerminal tipoDato;
 	public TNumero(String valor, int contador) {
 		setValor(valor);
@@ -36,6 +36,16 @@ public class TNumero implements Token {
     }
 
     @Override
+    public int getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(int scope) {
+        this.scope=scope;
+    }
+
+    @Override
     public int getContador() {
         return contador;
     }
@@ -59,6 +69,7 @@ public class TNumero implements Token {
                 "variable='" + numero + '\'' +
                 ", contador=" + contador +
                 ", tipoDato=" + tipoDato +
+                ", scope=" + scope+
                 '}';
     }
 

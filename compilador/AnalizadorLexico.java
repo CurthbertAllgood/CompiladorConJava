@@ -1,9 +1,8 @@
-package compilador;
+package compilador.compilador;
 
-
-import compilador.tokens.Token;
-import compilador.tokens.TEOF;
-import compilador.tokens.TokenFactory;
+import compilador.compilador.tokens.Token;
+import compilador.compilador.tokens.TEOF;
+import compilador.compilador.tokens.TokenFactory;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -56,7 +55,7 @@ class AnalizadorLexico {
 			return new TEOF("EOF", contador);
 		}
 
-		// Cadena literal
+		// Cadena literal con comillas simples
 		if (caracter == '\'') {
 			cadena.append((char) caracter);
 			caracter = fr.read();
@@ -65,6 +64,19 @@ class AnalizadorLexico {
 				caracter = fr.read();
 			}
 			if (caracter == '\'') {
+				cadena.append((char) caracter);
+				opcion = 4;
+			}
+		}
+		// Cadena literal con comillas dobles
+		else if (caracter == '"') {
+			cadena.append((char) caracter);
+			caracter = fr.read();
+			while (caracter != -1 && caracter != '"') {
+				cadena.append((char) caracter);
+				caracter = fr.read();
+			}
+			if (caracter == '"') {
 				cadena.append((char) caracter);
 				opcion = 4;
 			}
@@ -100,7 +112,7 @@ class AnalizadorLexico {
 		}
 
 		if (opcion == 0) {
-			throw new IllegalStateException("No se pudo determinar el tipo de token");
+			//throw new IllegalStateException("No se pudo determinar el tipo de token");
 		}
 
 		return tf.crearToken(opcion, cadena.toString(), contador);

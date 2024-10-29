@@ -1,4 +1,4 @@
-package compilador.tokens;
+package compilador.compilador.tokens;
 
 public class TokenFactory {
 
